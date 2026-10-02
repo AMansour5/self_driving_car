@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARLA Operator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>⬡ CARLA Control Panel</h1>
+    <div class="status-row">
+      <div class="status-pill"><div class="dot" id="dot-ros"></div><span id="ros-text">ROS DISCONNECTED</span></div>
+    </div>
+  </header>
+
+  <div class="main-grid">
+    <div class="cameras">
+      <div class="stream-card"><span class="label">FRONT</span><img id="cam-front" alt="Front"><span class="nosig">NO SIGNAL</span></div>
+      <div class="stream-card"><span class="label">REAR</span><img id="cam-rear" alt="Rear"><span class="nosig">NO SIGNAL</span></div>
+      <div class="stream-card"><span class="label">LEFT</span><img id="cam-left" alt="Left"><span class="nosig">NO SIGNAL</span></div>
+      <div class="stream-card"><span class="label">RIGHT</span><img id="cam-right" alt="Right"><span class="nosig">NO SIGNAL</span></div>
+    </div>
+
+    <div class="sidebar">
+      <div class="panel">
+        <div class="panel-title">Mission Control</div>
+        <div class="mode-readout" id="mode">MANUAL</div>
+        <div class="joy-row" id="joy-row"><div class="dot" id="dot-joy"></div><span id="joy-text">JOYSTICK NOT CONNECTED</span></div>
+        <button class="send-btn active" id="btn-manual">▶ Set Phase: Manual</button>
+        <button class="send-btn" id="btn-auto">▶ Set Phase: Autonomous</button>
+      </div>
+
+      <div class="panel" id="gamepad-panel">
+        <div class="panel-title">Gamepad Input</div>
+        <div class="gamepad-visual">
+          <div class="axes" id="axes"></div>
+          <div class="btn-grid" id="btn-grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/roslib@1.4.1/build/roslib.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
