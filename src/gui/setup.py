@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'gui_streamer = gui.nodes.GUIStreamingNode:main',
+            'gui_streaming_node = gui.nodes.GUIStreamingNode:main',
             'camera_streaming_node = gui.nodes.CameraStreamingNode:main',
         ],
     },

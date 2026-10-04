@@ -128,9 +128,7 @@ def main():
     except KeyboardInterrupt:
         pass
     finally:
-        if node is not None:
-            node.cleanup()
-            node.destroy_node()
+        node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()
 

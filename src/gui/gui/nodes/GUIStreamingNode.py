@@ -5,7 +5,7 @@ from utils.EnvParams import EnvParams
 
 class GUIStreamingNode(Node):
     def __init__(self):
-        super().__init__('gui_streamer')
+        super().__init__('gui_streaming_node')
         self.timer = self.create_timer(0.1, self.stream)
 
     def stream(self):
@@ -14,13 +14,13 @@ class GUIStreamingNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    gui_streamer = GUIStreamingNode()
+    gui_streaming_node = GUIStreamingNode()
     try:
-        rclpy.spin(gui_streamer)
+        rclpy.spin(gui_streaming_node)
     except KeyboardInterrupt:
         pass
     finally:
-        gui_streamer.destroy_node()
+        gui_streaming_node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()
 

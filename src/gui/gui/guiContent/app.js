@@ -40,7 +40,7 @@ function connect() {
 
 function setup() {
   modeTopic = new ROSLIB.Topic({ ros, name: '/control_mode', messageType: 'std_msgs/msg/String', latch: true });
-  joyTopic = new ROSLIB.Topic({ ros, name: '/joy', messageType: 'sensor_msgs/msg/Joy' });
+  joyTopic = new ROSLIB.Topic({ ros, name: '/Joy', messageType: 'interfaces/msg/Joystick' });
   for (const [name, topic] of Object.entries(CAMS)) {
     new ROSLIB.Topic({
       ros, name: topic, messageType: 'sensor_msgs/msg/CompressedImage',
@@ -97,7 +97,7 @@ for (let i = 0; i < N_BUTTONS; i++) {
 // ---- Joystick: browser Gamepad API (Bluetooth pad paired to the laptop) ----
 const getPad = () => [...navigator.getGamepads()].find(p => p);
 
-function pollJoystick() {
+function sendJoystickData() {
   const pad = getPad();
   $('dot-joy').classList.toggle('ok', !!pad);
   $('joy-text').textContent = pad ? 'JOYSTICK CONNECTED' : 'JOYSTICK NOT CONNECTED';
@@ -110,11 +110,33 @@ function pollJoystick() {
   }
 
   if (connected) {
-    const ms = Date.now();
+    const buttonPressed = index => !!pad.buttons[index]?.pressed;
+    const triggerValue = index => pad.buttons[index]?.value ?? 0;
     joyTopic.publish(new ROSLIB.Message({
-      header: { stamp: { sec: Math.floor(ms / 1000), nanosec: (ms % 1000) * 1e6 }, frame_id: '' },
-      axes,
-      buttons: pad.buttons.map(b => (b.pressed ? 1 : 0)),
+      left_x_axis: axes[0] ?? 0,
+      left_y_axis: axes[1] ?? 0,
+      right_x_axis: axes[2] ?? 0,
+      right_y_axis: axes[3] ?? 0,
+      l2_axis: triggerValue(6),
+      r2_axis: triggerValue(7),
+      button_x: buttonPressed(0),
+      button_o: buttonPressed(1),
+      button_rect: buttonPressed(2),
+      button_tri: buttonPressed(3),
+      button_l1: buttonPressed(4),
+      button_r1: buttonPressed(5),
+      button_l2: buttonPressed(6),
+      button_r2: buttonPressed(7),
+      button_share: buttonPressed(8),
+      button_options: buttonPressed(9),
+      button_l3: buttonPressed(10),
+      button_r3: buttonPressed(11),
+      button_top: buttonPressed(12),
+      button_bot: buttonPressed(13),
+      button_left: buttonPressed(14),
+      button_right: buttonPressed(15),
+      button_ps: buttonPressed(16),
+      button_pad: buttonPressed(17),
     }));
   }
 }
@@ -122,5 +144,5 @@ function pollJoystick() {
 setMode('manual', false);
 connect();
 requestAnimationFrame(render);
-setInterval(pollJoystick, 50);   // 20 Hz
+setInterval(sendJoystickData, 50);   // 20 Hz
 setInterval(publishMode, 1000);  // heartbeat so late subscribers learn the mode
