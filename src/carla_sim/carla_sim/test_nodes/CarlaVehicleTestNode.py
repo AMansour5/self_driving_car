@@ -15,7 +15,7 @@ class CarlaVehicleTestNode(Node):
         self.carla_api.connect()
         self.carla_api.loadWorld()
         try:
-            self.vehicle.spawn(self.carla_api.world)
+            self.vehicle.spawn(self.carla_api.getWorld())
         except SimError:
             # loadWorld switched the server to synchronous mode: restore it before giving up
             self.carla_api.disconnect()

@@ -70,3 +70,6 @@ class CarlaApi():
             self.world.tick()
         except Exception as e:
             print(f"Failed to tick the world - {e}")
+
+    def getWorld(self):
+        return self.world
