@@ -28,6 +28,7 @@ setup(
     entry_points={
         'console_scripts': [
             'carla_api_test_node = carla_sim.test_nodes.CarlaApiTestNode:main',
+            'carla_vehicle_test_node = carla_sim.test_nodes.CarlaVehicleTestNode:main'
         ],
     },
 )

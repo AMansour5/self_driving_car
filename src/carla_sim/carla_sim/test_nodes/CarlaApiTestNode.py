@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
-from carla_sim.services.CarlaApi import CarlaApi
 from utils.Configurator import Configurator
+from carla_sim.services.CarlaApi import CarlaApi
 
 class CarlaApiTestNode(Node):
     def __init__(self):
