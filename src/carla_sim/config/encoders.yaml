@@ -1,0 +1,10 @@
+encoders:
+    topic: /carla/wheel/joint_states   # rear wheels; position quantized to encoder ticks
+    rate_hz: 50
+    ticks_per_rev: 1024
+    speed_noise_std: 0.02              # m/s, independent per wheel
+    scale_error: 0.005                 # wheels over-read speed by 0.5% (radius mismatch) -> visible drift
+
+ground_truth:
+  topic: /sim/ground_truth/odom      # sim-only: for scoring the estimator and building the first map
+  rate_hz: 50

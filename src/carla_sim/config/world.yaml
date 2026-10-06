@@ -1,0 +1,3 @@
+world:
+  town: Town10HD_Opt                 # override at launch with  town:=Town05
+  fixed_delta_seconds: 0.05    # 100 Hz sim step; sets the IMU rate (one sample per tick)

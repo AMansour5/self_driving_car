@@ -1,0 +1,7 @@
+vehicle:
+  blueprint: vehicle.tesla.model3
+  spawn_index: 0
+
+control:                       # actuator input (interfaces/msg/VehicleCommand)
+  topic: /vehicle/command
+  timeout_s: 0.5               # no command for this long -> the sim holds the brake
