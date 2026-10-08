@@ -1,6 +1,8 @@
 vehicle:
   blueprint: vehicle.tesla.model3
   spawn_index: 0
+  rear_axle_x: -1.4            # meters from the actor origin to the rear axle (negative = behind).
+                               # Approximate for the Model 3: check it against the geometry line printed at spawn
   vehicle_marker_topic: /vehicle/marker
 
 control:                       # actuator input (interfaces/msg/VehicleCommand)

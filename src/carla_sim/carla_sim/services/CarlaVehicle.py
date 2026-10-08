@@ -14,8 +14,13 @@ class CarlaVehicle():
         self.actor = None
         self.wheel_radius = 0.35  # meters, replaced by the car's real value after spawning
         # base_link is the rear axle: its distance from the actor's origin along the car's forward
-        # axis, in meters (negative = behind the origin). Read from the wheels after spawning.
-        self.rear_axle_x = 0.0
+        # axis, in meters (negative = behind the origin). It comes from vehicle.yaml.
+        try:
+            self.rear_axle_x = float(vehicle_cfg.get("rear_axle_x", 0.0))
+        except (TypeError, ValueError) as e:
+            raise SimError("'rear_axle_x' in the vehicle config must be a number of meters.") from e
+        if "rear_axle_x" not in vehicle_cfg:
+            print("Warning: 'rear_axle_x' is not set in the vehicle config, base_link will sit at the actor origin.")
 
     def spawn(self, world):
         if self.actor is not None:
@@ -29,7 +34,7 @@ class CarlaVehicle():
         except (RuntimeError, IndexError) as e:
             raise SimError(f"Failed to spawn '{self.blueprint}' - {e}") from e
         self.__readWheelRadius()
-        self.__readRearAxle()
+        self.__printGeometry()
         print(f"Successfully spawned {self.blueprint} (wheel radius {self.wheel_radius:.3f} m, "
               f"rear axle {self.rear_axle_x:+.2f} m from the actor origin)")
         return self.actor
@@ -75,18 +80,17 @@ class CarlaVehicle():
         except (RuntimeError, IndexError, AttributeError):
             print(f"Warning: wheel radius unavailable, assuming {self.wheel_radius} m.")
 
-    def __readRearAxle(self):
+    def __printGeometry(self):
+        # Raw values, printed once at spawn so rear_axle_x can be checked against the real car
         try:
-            # wheels[2] and wheels[3] are the rear wheels; positions are world coordinates in cm
-            wheels = self.actor.get_physics_control().wheels
-            axle_x = (wheels[2].position.x + wheels[3].position.x) / 200.0
-            axle_y = (wheels[2].position.y + wheels[3].position.y) / 200.0
             tf = self.actor.get_transform()
-            yaw = math.radians(tf.rotation.yaw)
-            dx, dy = axle_x - tf.location.x, axle_y - tf.location.y
-            self.rear_axle_x = math.cos(yaw) * dx + math.sin(yaw) * dy      # along the car
-            sideways = -math.sin(yaw) * dx + math.cos(yaw) * dy             # across the car
-            if abs(sideways) > 0.05:
-                print(f"Warning: the rear axle is {sideways:.2f} m off the car's centerline.")
-        except (RuntimeError, IndexError, AttributeError):
-            print("Warning: rear axle position unavailable, base_link will sit at the actor origin.")
+            box = self.actor.bounding_box
+            wheels = self.actor.get_physics_control().wheels
+            positions = ", ".join(f"{name}=({w.position.x:.0f}, {w.position.y:.0f}, {w.position.z:.0f})"
+                                  for name, w in zip(("FL", "FR", "RL", "RR"), wheels))
+            print(f"Vehicle geometry - actor ({tf.location.x:.2f}, {tf.location.y:.2f}, {tf.location.z:.2f}) "
+                  f"yaw {tf.rotation.yaw:.1f}; box center ({box.location.x:.2f}, {box.location.y:.2f}, "
+                  f"{box.location.z:.2f}) extent ({box.extent.x:.2f}, {box.extent.y:.2f}, {box.extent.z:.2f}); "
+                  f"wheels in cm: {positions}")
+        except (RuntimeError, AttributeError):
+            print("Warning: vehicle geometry unavailable.")
