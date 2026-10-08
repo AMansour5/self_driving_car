@@ -5,13 +5,7 @@ import pathlib
 class Configurator():
     BUTTONS = "joystick_buttons"
     CARLA_WORLD = "world"
-    VEHICLE = "vehicle"
-    CAMERAS = "cameras"
     ENCODERS = "encoders"
-    IMU = "imu"
-    GPS = "gps"
-    LIDAR = "lidar"
-    RADAR = "radar"
     
     def __init__(self, pkg: str = None):
         self.__configFile = ''
@@ -47,20 +41,8 @@ class Configurator():
             config_filename = Configurator.BUTTONS
         elif data_type == Configurator.CARLA_WORLD:
             config_filename = Configurator.CARLA_WORLD
-        elif data_type == Configurator.VEHICLE:
-            config_filename = Configurator.VEHICLE
-        elif data_type == Configurator.CAMERAS:
-            config_filename = Configurator.CAMERAS
         elif data_type == Configurator.ENCODERS:
             config_filename = Configurator.ENCODERS
-        elif data_type == Configurator.IMU:
-            config_filename = Configurator.IMU
-        elif data_type == Configurator.GPS:
-            config_filename = Configurator.GPS
-        elif data_type == Configurator.LIDAR:
-            config_filename = Configurator.LIDAR
-        elif data_type == Configurator.RADAR:
-            config_filename = Configurator.RADAR
         else:
             self.__raiseTypeError(data_type)
         

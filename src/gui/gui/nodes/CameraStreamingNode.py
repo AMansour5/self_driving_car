@@ -12,10 +12,10 @@ from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import CompressedImage, Image
 
 TOPICS = [
-    "/carla/camera/image_raw",
-    "/carla/camera_rear/image_raw",
-    "/carla/camera_left/image_raw",
-    "/carla/camera_right/image_raw",
+    "/carla/hero/camera_front/image",
+    "/carla/hero/camera_rear/image",
+    "/carla/hero/camera_left/image",
+    "/carla/hero/camera_right/image",
 ]
 JPEG_QUALITY = 70
 

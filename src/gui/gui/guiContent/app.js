@@ -1,10 +1,10 @@
 // ---- Configuration ---------------------------------------------------------
 const ROSBRIDGE_URL = `ws://${location.hostname || 'localhost'}:9090`;
-const CAMS = {  // panel id -> CompressedImage topic (from jpeg_relay.py)
-  front: '/carla/camera/image_raw/compressed',
-  rear:  '/carla/camera_rear/image_raw/compressed',
-  left:  '/carla/camera_left/image_raw/compressed',
-  right: '/carla/camera_right/image_raw/compressed',
+const CAMS = {  // panel id -> CompressedImage topic (from CameraStreamingNode)
+  front: '/carla/hero/camera_front/image/compressed',
+  rear:  '/carla/hero/camera_rear/image/compressed',
+  left:  '/carla/hero/camera_left/image/compressed',
+  right: '/carla/hero/camera_right/image/compressed',
 };
 const THROTTLE_MS = 100;  // max 10 fps per camera over the websocket
 const STALE_MS = 2000;    // no frame for this long -> "No signal"

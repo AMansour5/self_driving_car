@@ -1,7 +1,0 @@
-radar:
-    type: radar
-    topic: /carla/radar/points   # PointCloud2 with an extra "velocity" field (radial, CARLA sign)
-    frame: radar_link
-    pose: {x: 2.2, y: 0.0, z: 0.6, roll: 0, pitch: 0, yaw: 0}
-    rate_hz: 20
-    attributes: {horizontal_fov: 60, vertical_fov: 10, range: 100, points_per_second: 1500}

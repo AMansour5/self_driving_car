@@ -11,7 +11,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ("share/" + package_name + "/config", glob("config/*.yaml")),
+        ("share/" + package_name + "/config", glob("config/*.yaml") + glob("config/*.json")),
         ("share/" + package_name + "/launch", glob("launch/*.py")),
     ],
     install_requires=['setuptools'],
@@ -28,8 +28,6 @@ setup(
     entry_points={
         'console_scripts': [
             'carla_api_test_node = carla_sim.test_nodes.CarlaApiTestNode:main',
-            'carla_vehicle_test_node = carla_sim.test_nodes.CarlaVehicleTestNode:main',
-            'carla_lifecycle_node = carla_sim.nodes.CarlaNode:main'
         ],
     },
 )

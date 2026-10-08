@@ -1,7 +1,0 @@
-gnss:
-    type: gnss
-    topic: /carla/gnss/fix
-    frame: gnss_link
-    pose: {x: 0.0, y: 0.0, z: 2.0, roll: 0, pitch: 0, yaw: 0}
-    rate_hz: 5
-    attributes: {noise_lat_stddev: 0.00001, noise_lon_stddev: 0.00001, noise_alt_stddev: 0.5}
