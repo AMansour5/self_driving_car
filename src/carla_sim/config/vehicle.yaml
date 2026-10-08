@@ -1,7 +1,15 @@
 vehicle:
   blueprint: vehicle.tesla.model3
   spawn_index: 0
+  vehicle_marker_topic: /vehicle/marker
 
 control:                       # actuator input (interfaces/msg/VehicleCommand)
   topic: /vehicle/command
   timeout_s: 0.5               # no command for this long -> the sim holds the brake
+
+tf:
+  map_frame: map
+  base_frame: base_link        # the rear axle, on the ground
+  ground_truth:
+    publish: true              # temporary: set to false once the localization node owns map -> base_link
+    child_frame: base_link     # becomes base_link_gt when the estimator takes over base_link

@@ -1,5 +1,6 @@
 import carla
 from utils.EnvParams import EnvParams
+from carla_sim.exceptions.SimError import SimError
 
 class CarlaApi():
     def __init__(self, world_cfg: dict):
@@ -73,3 +74,12 @@ class CarlaApi():
 
     def getWorld(self):
         return self.world
+
+    def getSimTime(self):
+        """Simulation seconds since the world was loaded, as of the last tick."""
+        if self.world is None:
+            raise SimError("World is not loaded.")
+        try:
+            return self.world.get_snapshot().timestamp.elapsed_seconds
+        except RuntimeError as e:
+            raise SimError(f"Failed to read the simulation time - {e}") from e

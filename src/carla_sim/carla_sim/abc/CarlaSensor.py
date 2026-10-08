@@ -31,7 +31,10 @@ class CarlaSensor(ABC):
         self.actor = None
         self._queue = SimpleQueue()
 
-    def attach(self, world, parent):
+    def attach(self, world, parent, base_link_x: float = 0.0):
+        """base_link_x is where base_link sits along the parent actor's forward axis, in meters
+        (negative = behind the actor's origin). Sensor poses are relative to base_link, but CARLA
+        mounts relative to the actor, so the offset is added when the sensor is spawned."""
         if world is None or parent is None:
             raise SimError(f"Cannot attach '{self.name}': it needs the world and the vehicle.")
         if self.actor is not None:
@@ -42,7 +45,7 @@ class CarlaSensor(ABC):
             for key, value in self._blueprintAttributes().items():
                 blueprint.set_attribute(key, str(value))
             self._queue = SimpleQueue()
-            actor = world.spawn_actor(blueprint, self.__carlaTransform(), attach_to=parent)
+            actor = world.spawn_actor(blueprint, self.__carlaTransform(base_link_x), attach_to=parent)
             actor.listen(self._queue.put)
         except (RuntimeError, IndexError) as e:
             if actor is not None:
@@ -80,10 +83,10 @@ class CarlaSensor(ABC):
     def _convert(self, raw):
         """Turn one raw CARLA measurement into a list of finished samples (possibly empty)."""
 
-    def __carlaTransform(self):
+    def __carlaTransform(self, base_link_x: float):
         # ROS (right-handed) -> CARLA (left-handed): y, pitch and yaw change sign
         p = self.pose
-        return carla.Transform(carla.Location(x=p["x"], y=-p["y"], z=p["z"]),
+        return carla.Transform(carla.Location(x=p["x"] + base_link_x, y=-p["y"], z=p["z"]),
                                carla.Rotation(roll=p["roll"], pitch=-p["pitch"], yaw=-p["yaw"]))
 
     def __destroyQuietly(self, actor):
