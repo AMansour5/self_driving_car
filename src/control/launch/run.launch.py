@@ -42,7 +42,7 @@ def generate_launch_description():
     return LaunchDescription([
         joystick_node,
         rosbridge_server_node,
-        camera_streaming_node,
+        # camera_streaming_node,
         gui_streaming_node,
-        carla_camera_pub_node,
+        # carla_camera_pub_node,
     ])

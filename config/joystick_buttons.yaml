@@ -1,5 +1,5 @@
-button_l1: NOTHING
-button_l2: NOTHING
+button_l1: L1
+button_l2: BRAKE
 button_left: NOTHING
 button_right: NOTHING
 button_share: NOTHING
@@ -10,7 +10,7 @@ button_pad: NOTHING
 button_r1: NOTHING
 button_x: NOTHING
 
-button_r2: NOTHING
+button_r2: SPEED
 button_bot: NOTHING
 button_top: NOTHING
 button_o: NOTHING
