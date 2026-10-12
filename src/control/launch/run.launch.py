@@ -39,10 +39,34 @@ def generate_launch_description():
         name='carla_camera_pub'
     )
 
+    manual_navigation_node = Node(
+        package='control',
+        executable='manual_navigation_node',
+        output='screen',
+        name='manual_navigation_node'
+    )
+
+    autonomous_navigation_node = Node(
+        package='control',
+        executable='autonomous_navigation_node',
+        output='screen',
+        name='autonomous_navigation_node'
+    )
+
+    mission_manager_node = Node(
+        package='control',
+        executable='mission_manager_node',
+        output='screen',
+        name='mission_manager_node'
+    )
+
     return LaunchDescription([
         joystick_node,
         rosbridge_server_node,
         # camera_streaming_node,
         gui_streaming_node,
         # carla_camera_pub_node,
+        manual_navigation_node,
+        autonomous_navigation_node,
+        mission_manager_node,
     ])

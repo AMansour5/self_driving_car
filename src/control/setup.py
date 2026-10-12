@@ -30,6 +30,9 @@ setup(
             'joystick_node = control.nodes.JoystickNode:main',
             'joystick_first_test_node = control.test_nodes.JoystickFirstTestNode:main',
             'joystick_second_test_node = control.test_nodes.JoystickSecondTestNode:main',
+            'manual_navigation_node = control.nodes.ManualNavigationNode:main',
+            'autonomous_navigation_node = control.nodes.AutonomousNavigationNode:main',
+            'mission_manager_node = control.nodes.MissionManagerNode:main',
         ],
     },
 )
