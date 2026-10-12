@@ -28,7 +28,14 @@ def generate_launch_description():
             get_package_share_directory("carla_spawn_objects"), "carla_spawn_objects.launch.py")),
         launch_arguments={'objects_definition_file': objects_file}.items()
     )
+
+    ackermann_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(
+            get_package_share_directory("carla_ackermann_control"), "carla_ackermann_control.launch.py")),
+        launch_arguments={'role_name': 'hero'}.items()
+    )
     return LaunchDescription([
         carla_bridge_launch,
         spawn_objects_launch,
+        ackermann_launch,
     ])
