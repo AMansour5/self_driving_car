@@ -6,6 +6,7 @@ class Configurator():
     BUTTONS = "joystick_buttons"
     CARLA_WORLD = "world"
     ENCODERS = "encoders"
+    SMOOTHING_STRATEGY = "smoothing_strategy"
     
     def __init__(self, pkg: str = None):
         self.__configFile = ''
@@ -43,6 +44,8 @@ class Configurator():
             config_filename = Configurator.CARLA_WORLD
         elif data_type == Configurator.ENCODERS:
             config_filename = Configurator.ENCODERS
+        elif data_type == Configurator.SMOOTHING_STRATEGY:
+            config_filename = Configurator.SMOOTHING_STRATEGY
         else:
             self.__raiseTypeError(data_type)
         
