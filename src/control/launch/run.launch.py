@@ -41,16 +41,16 @@ def generate_launch_description():
 
     manual_navigation_node = Node(
         package='control',
-        executable='manual_navigation_node',
+        executable='manual_drive_node',
         output='screen',
-        name='manual_navigation_node'
+        name='manual_drive_node'
     )
 
     autonomous_navigation_node = Node(
         package='control',
-        executable='autonomous_navigation_node',
+        executable='autonomous_drive_node',
         output='screen',
-        name='autonomous_navigation_node'
+        name='autonomous_drive_node'
     )
 
     mission_manager_node = Node(

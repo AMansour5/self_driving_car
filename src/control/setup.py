@@ -30,9 +30,10 @@ setup(
             'joystick_node = control.nodes.JoystickNode:main',
             'joystick_first_test_node = control.test_nodes.JoystickFirstTestNode:main',
             'joystick_second_test_node = control.test_nodes.JoystickSecondTestNode:main',
-            'manual_navigation_node = control.nodes.ManualNavigationNode:main',
-            'autonomous_navigation_node = control.nodes.AutonomousNavigationNode:main',
+            'manual_drive_node = control.nodes.ManualDriveNode:main',
+            'autonomous_drive_node = control.nodes.AutonomousDriveNode:main',
             'mission_manager_node = control.nodes.MissionManagerNode:main',
+            'mock_vehicle_info_node = control.mocks.MockVehicleInfo:main',
         ],
     },
 )

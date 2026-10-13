@@ -1,0 +1,2 @@
+max_speed: 8.0            # m/s, full trigger in either direction
+joystick_timeout_s: 0.5   # no fresh joystick data for this long -> safe stop

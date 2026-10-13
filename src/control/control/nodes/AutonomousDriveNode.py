@@ -1,39 +1,39 @@
 import rclpy
 from control.services.Joystick import CJoystick
-from control.services.Navigation import Navigation
+from control.services.Driver import Driver
 from rclpy.lifecycle import LifecycleNode, LifecycleState, TransitionCallbackReturn
 
-class ManualNavigationNode(LifecycleNode):
+class AutonomousDriveNode(LifecycleNode):
     def __init__(self):
-        super().__init__('manual_navigation_node')
+        super().__init__('autonomous_drive_node')
         self._logger = self.get_logger()
 
     def on_configure(self, state: LifecycleState) -> TransitionCallbackReturn:
-        self._logger.info('Configuring ManualNavigationNode...')
+        self._logger.info('Configuring AutonomousDriveNode...')
         self._joystick = CJoystick()
-        self._navigation = Navigation()
+        self._driver = Driver()
         return TransitionCallbackReturn.SUCCESS
     
     def on_activate(self, state: LifecycleState) -> TransitionCallbackReturn:
-        self._logger.info('Activating ManualNavigationNode...')
+        self._logger.info('Activating AutonomousDriveNode...')
         return TransitionCallbackReturn.SUCCESS
 
     def on_deactivate(self, state: LifecycleState) -> TransitionCallbackReturn:
-        self._logger.info('Deactivating ManualNavigationNode...')
+        self._logger.info('Deactivating AutonomousDriveNode...')
         return TransitionCallbackReturn.SUCCESS
 
     def on_cleanup(self, state: LifecycleState) -> TransitionCallbackReturn:
-        self._logger.info('Cleaning up ManualNavigationNode...')
+        self._logger.info('Cleaning up AutonomousDriveNode...')
         return TransitionCallbackReturn.SUCCESS
 
     def on_shutdown(self, state: LifecycleState) -> TransitionCallbackReturn:
-        self._logger.info('Shutting down ManualNavigationNode...')
+        self._logger.info('Shutting down AutonomousDriveNode...')
         return TransitionCallbackReturn.SUCCESS
 
 def main(args=None):
     rclpy.init(args=args)
     try:
-        node = ManualNavigationNode()
+        node = AutonomousDriveNode()
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
@@ -44,3 +44,5 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
+    

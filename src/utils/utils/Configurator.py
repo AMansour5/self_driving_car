@@ -7,6 +7,7 @@ class Configurator():
     CARLA_WORLD = "world"
     ENCODERS = "encoders"
     SMOOTHING_STRATEGY = "smoothing_strategy"
+    DRIVE = "drive"
     
     def __init__(self, pkg: str = None):
         self.__configFile = ''
@@ -46,6 +47,8 @@ class Configurator():
             config_filename = Configurator.ENCODERS
         elif data_type == Configurator.SMOOTHING_STRATEGY:
             config_filename = Configurator.SMOOTHING_STRATEGY
+        elif data_type == Configurator.DRIVE:
+            config_filename = Configurator.DRIVE
         else:
             self.__raiseTypeError(data_type)
         

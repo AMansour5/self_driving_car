@@ -10,7 +10,7 @@ class MissionManagerNode(Node):
     """
     The Supreme Orchestrator.
     Handles Lifecycle Management (Configure, Activate, Deactivate, Cleanup), 
-    Nav2 Action goals, and Vision timeouts.
+    Drive2 Action goals, and Vision timeouts.
     """
 
     def __init__(self):
@@ -21,14 +21,14 @@ class MissionManagerNode(Node):
         self.manager = MissionManager()
 
         # 2. Setup Lifecycle Service Clients
-        self.manual_client = self.create_client(ChangeState, '/manual_navigation_node/change_state')
-        self.auto_client = self.create_client(ChangeState, '/autonomous_navigation_node/change_state')
+        self.manual_client = self.create_client(ChangeState, '/manual_drive_node/change_state')
+        self.auto_client = self.create_client(ChangeState, '/autonomous_drive_node/change_state')
 
         # 3. Setup Subscribers
         self.mode_sub = self.create_subscription(String, '/control_mode', self.mode_callback, 10)
         
         # 4. Execute Boot Sequence
-        self._log.info("Waiting for Navigation nodes to come online...")
+        self._log.info("Waiting for drive nodes to come online...")
         self._timer = self.create_timer(0.1, self._timer_callback)
         self._execute_boot_sequence()
 
@@ -44,34 +44,34 @@ class MissionManagerNode(Node):
         # Ensure services are available before sending requests
         self.manual_client.wait_for_service(timeout_sec=5.0)
         self.auto_client.wait_for_service(timeout_sec=5.0)
-        self._log.info("Configuring Navigation Nodes (Loading YAMLs, Shared Memory, etc.)...")
+        self._log.info("Configuring drive Nodes (Loading YAMLs, Shared Memory, etc.)...")
         
         # 1. Send CONFIGURE to both (Moves them to 'Inactive')
-        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_CONFIGURE, "ManualNav")
-        self._change_lifecycle_state(self.auto_client, Transition.TRANSITION_CONFIGURE, "AutoNav")
+        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_CONFIGURE, "ManualDrive")
+        self._change_lifecycle_state(self.auto_client, Transition.TRANSITION_CONFIGURE, "AutoDrive")
 
         # 2. Automatically Activate Phase 1 (Manual)
         self._log.info("Boot sequence complete. Activating default Phase 1 (Manual).")
-        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_ACTIVATE, "ManualNav")
+        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_ACTIVATE, "ManualDrive")
 
     def _execute_transition_to_manual(self):
         """Safely pauses Auto and spins up Manual."""
         self._log.info("Transitioning stack to MANUAL control...")
         
         # 1. Deactivate Autonomous Node (Active -> Inactive)
-        self._change_lifecycle_state(self.auto_client, Transition.TRANSITION_DEACTIVATE, "AutoNav")
+        self._change_lifecycle_state(self.auto_client, Transition.TRANSITION_DEACTIVATE, "AutoDrive")
         
         # 2. Activate Manual Node (Inactive -> Active)
-        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_ACTIVATE, "ManualNav")
+        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_ACTIVATE, "ManualDrive")
 
     def _execute_transition_to_auto(self):
         """Safely pauses Manual, spins up Auto, and triggers Waypoint 1."""
         self._log.info("Transitioning stack to AUTONOMOUS control...")
         
         # 1. Deactivate Manual Node (Active -> Inactive)
-        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_DEACTIVATE, "ManualNav")
+        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_DEACTIVATE, "ManualDrive")
         # 2. Activate Autonomous Node (Inactive -> Active)
-        self._change_lifecycle_state(self.auto_client, Transition.TRANSITION_ACTIVATE, "AutoNav")
+        self._change_lifecycle_state(self.auto_client, Transition.TRANSITION_ACTIVATE, "AutoDrive")
 
     def _execute_teardown_sequence(self):
         """
@@ -81,12 +81,12 @@ class MissionManagerNode(Node):
         self._log.info("Unconfiguring nodes to free shared memory and hardware locks...")
         
         # First ensure they are deactivated
-        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_DEACTIVATE, "ManualNav")
-        self._change_lifecycle_state(self.auto_client, Transition.TRANSITION_DEACTIVATE, "AutoNav")
+        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_DEACTIVATE, "ManualDrive")
+        self._change_lifecycle_state(self.auto_client, Transition.TRANSITION_DEACTIVATE, "AutoDrive")
         
         # Then Unconfigure (Cleanup)
-        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_CLEANUP, "ManualNav")
-        self._change_lifecycle_state(self.auto_client, Transition.TRANSITION_CLEANUP, "AutoNav")
+        self._change_lifecycle_state(self.manual_client, Transition.TRANSITION_CLEANUP, "ManualDrive")
+        self._change_lifecycle_state(self.auto_client, Transition.TRANSITION_CLEANUP, "AutoDrive")
 
     def _change_lifecycle_state(self, client: rclpy.client.Client, transition_id: int, node_label: str):
         """Helper to send standard ROS 2 lifecycle transition requests."""

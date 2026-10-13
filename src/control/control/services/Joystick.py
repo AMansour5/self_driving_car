@@ -336,6 +336,15 @@ class CJoystick:
             return {"left_x_axis": 0.0, "left_y_axis": 0.0, "right_x_axis": 0.0, "right_y_axis": 0.0}  # Default values if no data available
         return data["axes"]
 
+    def getFreshAxis(self, max_age_s):
+        """Axis values, or None when there is no data or it is older than max_age_s seconds."""
+        data = self.__getData()
+        if data is None or "axes" not in data or "timestamp" not in data:
+            return None
+        if time.time() - data["timestamp"] > max_age_s:
+            return None
+        return data["axes"]
+
     def _signal_cleanup(self, signum, frame):
         """
         Perform cleanup when a termination signal is received.
