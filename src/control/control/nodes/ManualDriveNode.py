@@ -1,11 +1,11 @@
 import math
 import time
-import signal
 import rclpy
-from rclpy.signals import SignalHandlerOptions
+import signal
 from control.services.Driver import Driver
 from ackermann_msgs.msg import AckermannDrive
 from carla_msgs.msg import CarlaEgoVehicleInfo
+from rclpy.signals import SignalHandlerOptions
 from control.services.Joystick import CJoystick
 from rclpy.lifecycle import LifecycleNode, LifecycleState, TransitionCallbackReturn
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy

@@ -26,7 +26,6 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'carla_camera_pub = control.nodes.carla_test:main',
             'joystick_node = control.nodes.JoystickNode:main',
             'joystick_first_test_node = control.test_nodes.JoystickFirstTestNode:main',
             'joystick_second_test_node = control.test_nodes.JoystickSecondTestNode:main',
